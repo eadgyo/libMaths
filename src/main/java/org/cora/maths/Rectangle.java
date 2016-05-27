@@ -40,7 +40,13 @@ public class Rectangle extends Form
 	{
 		return new Rectangle(this);
 	}
-	
+
+	/**
+	 *
+	 * @param center center of the rectangle
+	 * @param length
+	 * @param omega angle of the rectangle
+     */
 	public Rectangle(Vector2D center, Vector2D length, float omega)
 	{
 		super(4);

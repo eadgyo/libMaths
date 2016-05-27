@@ -1,6 +1,9 @@
 package org.cora.maths;
 
 
+/**
+ * Rectangle with no rotation
+ */
 public class sRectangle extends Form
 {
 	public final static long serialVersionUID = 9197968313933241114L;

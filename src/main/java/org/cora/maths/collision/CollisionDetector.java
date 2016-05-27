@@ -7,9 +7,22 @@ import org.cora.maths.Form;
 import org.cora.maths.Matrix2;
 import org.cora.maths.Vector2D;
 
-
+/**
+ * Tools to detect collision between two convex polygons
+ */
 public class CollisionDetector
 {
+    /**
+     *
+     * @param A
+     * @param B
+     * @param VA velocity of object A
+     * @param VB velocity of object B
+     * @param push a blank vector to store the penetration vector
+     * @param t a blank float to store the result of amount of penetration
+     * @return result of collision detection testing
+     */
+
     public static boolean isColliding(Form A, Form B, Vector2D VA, Vector2D VB,
             Vector2D push, FloatA t)
     {

@@ -46,6 +46,11 @@ public class Matrix3 implements java.io.Serializable
     }
 
     // Multiplication
+    /**
+     *
+     * @param o left matrix product
+     * @return product of 2 matrix
+     */
     public Matrix3 multiply(Matrix3 o)
     {
         return new Matrix3(data[0] * o.data[0] + data[1] * o.data[3], data[0]
@@ -57,6 +62,10 @@ public class Matrix3 implements java.io.Serializable
                 * o.data[5] + data[5]);
     }
 
+    /**
+     * Result matrix is set to this matrix
+     * @param o
+     */
     public void selfMultiply(Matrix3 o)
     {
         float t1;

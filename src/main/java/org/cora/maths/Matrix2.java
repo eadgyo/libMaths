@@ -15,6 +15,14 @@ public class Matrix2 implements java.io.Serializable
 		data = new float[4];
 		this.set(m);
 	}
+
+	/**
+	 *
+ 	 * @param f0
+	 * @param f1
+	 * @param f2
+     * @param f3
+     */
 	public Matrix2(float f0, float f1, float f2, float f3)
 	{
 		data[0] = f0;
@@ -36,6 +44,12 @@ public class Matrix2 implements java.io.Serializable
 	}
 	
 	//Multiplication
+
+    /**
+     *
+     * @param m left matrix product
+     * @return product of 2 matrix
+     */
 	public Matrix2 multiply(Matrix2 m)
 	{
 		//this == gauche
@@ -46,11 +60,22 @@ public class Matrix2 implements java.io.Serializable
 		result.data[3] = this.data[2]*m.data[1] + data[3]*m.data[3];
 		return result;
 	}
+
+    /**
+     * Result matrix is set to this matrix
+     * @param m
+     */
 	public void selfMultiply(Matrix2 m)
 	{
 		Matrix2 result = this.multiply(m);
 		this.set(result);
 	}
+
+    /**
+     *
+     * @param v
+     * @return transformation of v by this matrix
+     */
 	public Vector2D multiply(Vector2D v)
 	{
 		Vector2D vec = new Vector2D();
@@ -58,16 +83,33 @@ public class Matrix2 implements java.io.Serializable
 		vec.y = v.x*data[2] + v.y*data[3];
 		return vec;
 	}
+
+    /**
+     *
+     * @param v
+     * @return x transformation of v
+     */
 	public float multiplyX(Vector2D v)
 	{
 		return v.x*data[0] + v.y*data[1];
 	}
-	public float multiplyY(Vector2D v)
+
+    /**
+     *
+     * @param v
+     * @return y transformation of v
+     */
+    public float multiplyY(Vector2D v)
 	{
 		return v.x*data[2] + v.y*data[3];
 	}
 	
 	//Transformations
+
+    /**
+     *
+     * @param factor scaling factor
+     */
 	public void scale(float factor)
 	{
 		data[0] *= factor;
@@ -135,7 +177,8 @@ public class Matrix2 implements java.io.Serializable
 	{
 		return data[0]*data[3] - data[2]*data[1];
 	}
-	public void setInverse(Matrix2 m)
+
+    public void setInverse(Matrix2 m)
 	{
 		float determinant = m.getDeterminant();
 		assert(determinant != 0): "Matrice non inversible";
@@ -159,6 +202,15 @@ public class Matrix2 implements java.io.Serializable
 		result.setOrientation(omega);
 		return result;
 	}
+
+    /**
+     * Create transformation with transformation data
+     * @param omega
+     * @param scale
+     * @param flipH
+     * @param flipV
+     * @return created Matrix
+     */
 	public static Matrix2 orientation(float omega, float scale, boolean flipH, boolean flipV)
 	{
 		Matrix2 result = Matrix2.orientation(omega);
