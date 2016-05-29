@@ -182,7 +182,7 @@ public class sRectangle extends Form
 	
 	public Vector2D getLeft()
 	{
-		return points.get(0);
+		return get(0);
 	}
 	
 	public float getLeftX()
