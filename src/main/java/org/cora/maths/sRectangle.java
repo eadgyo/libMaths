@@ -129,31 +129,31 @@ public class sRectangle extends Form
 	
 	public boolean isInside(sRectangle rect)
 	{
-		if(rect.getX(0) > points.get(0).x && rect.getX(2) < points.get(2).x)
-			if(rect.getY(0) > points.get(0).y &&  rect.getY(2) < points.get(2).y)
+		if(rect.getX(0) > getX(0) && rect.getX(2) < getX(2))
+			if(rect.getY(0) > getY(0) &&  rect.getY(2) < getY(2))
 				return true;
 		return false;
 	}
 	//with border
 	public boolean isInsideBorder(sRectangle rect)
 	{
-		if(rect.getX(0) >= points.get(0).x && rect.getX(2) <= points.get(2).x)
-			if(rect.getY(0) >= points.get(0).y &&  rect.getY(2) <= points.get(2).y)
+		if(rect.getX(0) >= getX(0) && rect.getX(2) <= getX(2))
+			if(rect.getY(0) >= getY(0) &&  rect.getY(2) <= getY(2))
 				return true;
 		return false;
 	}
 	public boolean isInside(Vector2D p)
 	{
-		if(p.x > points.get(0).x && p.x < points.get(2).x)
-			if(p.y > points.get(0).y &&  p.y < points.get(2).y)
+		if(p.x > getX(0) && p.x < getX(2))
+			if(p.y > getX(0) &&  p.y < getY(2))
 				return true;
 		return false;
 	}	
 	//with border
 	public boolean isInsideBorder(Vector2D p)
 	{
-		if(p.x >= points.get(0).x && p.x <= points.get(2).x)
-			if(p.y >= points.get(0).y &&  p.y <= points.get(2).y)
+		if(p.x >= getX(0) && p.x <= getX(2))
+			if(p.y >= getY(0) &&  p.y <= getY(2))
 				return true;
 		return false;
 	}
