@@ -1,13 +1,8 @@
 package org.cora.maths.collision;
 
-import java.util.ArrayList;
+import org.cora.maths.*;
 
-import org.cora.maths.Circle;
-import org.cora.maths.FloatA;
-import org.cora.maths.Form;
-import org.cora.maths.Matrix2;
-import org.cora.maths.RoundForm;
-import org.cora.maths.Vector2D;
+import java.util.ArrayList;
 
 
 public class CollisionDetectorTools
@@ -133,7 +128,7 @@ public class CollisionDetectorTools
         ArrayList<Vector2D> l_vectors = new ArrayList<Vector2D>(A.size());
         for (int j = A.size() - 1, i = 0; i < A.size(); j = i, i++)
         {
-            Vector2D v = new Vector2D(A.get(j), A.get(i));
+            Vector2D v = new Vector2D(A.getLocal(j), A.getLocal(i));
             l_vectors.add(v.getPerpendicular());
         }
 

@@ -185,13 +185,8 @@ public class Form implements Serializable, Cloneable
     }
 
     /**
-     * At the end of the creation of a form, you can call this function to update information
+     * Compute the center of this form
      */
-    public void endForm()
-    {
-        updateCenter();
-    }
-
     public void updateCenter()
     {
         Vector2D newCenter = this.getCentroidWorld();
