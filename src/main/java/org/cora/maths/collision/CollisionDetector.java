@@ -1,11 +1,11 @@
 package org.cora.maths.collision;
 
-import java.util.ArrayList;
-
 import org.cora.maths.FloatA;
 import org.cora.maths.Form;
 import org.cora.maths.Matrix2;
 import org.cora.maths.Vector2D;
+
+import java.util.ArrayList;
 
 /**
  * Tools to detect collision between two convex polygons
@@ -14,22 +14,21 @@ public class CollisionDetector
 {
     /**
      *
-     * @param A
-     * @param B
+     * @param A test form A
+     * @param B test form B
      * @param VA velocity of object A
      * @param VB velocity of object B
      * @param push a blank vector to store the penetration vector
      * @param t a blank float to store the result of amount of penetration
      * @return result of collision detection testing
      */
-
     public static boolean isColliding(Form A, Form B, Vector2D VA, Vector2D VB,
             Vector2D push, FloatA t)
     {
         return collisionSat(A, B, VA, VB, push, t);
     }
 
-    public static boolean collisionSat(Form A, Form B, Vector2D VA,
+    private static boolean collisionSat(Form A, Form B, Vector2D VA,
             Vector2D VB, Vector2D push, FloatA t)
     {
         // Les vecteurs VA et VB sont exprimés dans le repère world
@@ -91,7 +90,7 @@ public class CollisionDetector
         return true;
     }
 
-    public static boolean intervalIntersection(Form A, Form B, Vector2D axis,
+    private static boolean intervalIntersection(Form A, Form B, Vector2D axis,
             Vector2D relPos, Vector2D relVel, Matrix2 orientI, AxesSat axesSat,
             FloatA t)
     {

@@ -1,10 +1,10 @@
 package org.cora.maths.collision;
 
-import java.util.ArrayList;
-
 import org.cora.maths.Form;
 import org.cora.maths.Matrix2;
 import org.cora.maths.Vector2D;
+
+import java.util.ArrayList;
 
 
 public class CollisionDetectorNoT
@@ -15,7 +15,7 @@ public class CollisionDetectorNoT
         return collisionSatFree(A, B);
     }
     
-    public static boolean collisionSatFree(Form A, Form B)
+    private static boolean collisionSatFree(Form A, Form B)
     {
         // Les vecteurs VA et VB sont exprimés dans le repère world
         // Les points PA et PB sont exprimés dans le repères world
@@ -53,7 +53,7 @@ public class CollisionDetectorNoT
         return true;
     }
 
-    public static boolean intervalIntersectionFree(Form A, Form B, Vector2D axis,
+    private static boolean intervalIntersectionFree(Form A, Form B, Vector2D axis,
             Vector2D relPos, Matrix2 orientI)
     {
         Vector2D minMaxA = A.getInterval(orientI.multiply(axis));
