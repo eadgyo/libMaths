@@ -10,9 +10,9 @@ public class Form implements Serializable, Cloneable
 {
     private static final long serialVersionUID = 1L;
     // update
-    protected float               omega, scale;
-    protected boolean             flipH, flipV;
-    protected Matrix3             orientation;
+    protected float omega, scale;
+    protected boolean flipH, flipV;
+    protected Matrix3 orientation;
 
     protected ArrayList<Vector2D> points;
 
@@ -54,6 +54,7 @@ public class Form implements Serializable, Cloneable
 
     /**
      * Create copy of a form
+     *
      * @param form pattern
      */
     public Form(Form form)
@@ -212,7 +213,9 @@ public class Form implements Serializable, Cloneable
 
     /**
      * return min and max projection of the polygon on the vector axis
+     *
      * @param axis
+     *
      * @return MinMax
      */
     public Vector2D getInterval(Vector2D axis)
@@ -234,7 +237,7 @@ public class Form implements Serializable, Cloneable
         }
         return minMax;
     }
-    
+
     public void updateOrientation()
     {
         orientation.setOrientation(omega, scale, flipH, flipV);
@@ -242,6 +245,7 @@ public class Form implements Serializable, Cloneable
 
     /**
      * Translate the polygon form actualCenter to the desired center
+     *
      * @param center
      */
     public void setCenter(Vector2D center)
@@ -252,6 +256,7 @@ public class Form implements Serializable, Cloneable
 
     /**
      * Move the point to the desired location. You will need to recall endForm() to update information.
+     *
      * @param n
      * @param p
      */
@@ -327,8 +332,8 @@ public class Form implements Serializable, Cloneable
     }
 
     /**
-     *
      * @param n the nrd point
+     *
      * @return the x coordinate
      */
     public float getX(int n)
@@ -340,8 +345,8 @@ public class Form implements Serializable, Cloneable
     }
 
     /**
-     *
      * @param n the nrd point
+     *
      * @return the y coordinate
      */
     public float getY(int n)
@@ -444,6 +449,78 @@ public class Form implements Serializable, Cloneable
         return yMax;
     }
 
+    /**
+     * @return xmin, xmax, ymin, ymax
+     */
+    public float[] getMinMax()
+    {
+        float minMax[] = new float[4];
+
+        if (size() < 1)
+            return minMax;
+
+        minMax[0] = minMax[1] = getX(0);
+        minMax[2] = minMax[3] = getY(0);
+
+        for (int i = 1; i < points.size(); i++)
+        {
+            float x = getX(i);
+            float y = getY(i);
+
+            if (x < minMax[0])
+            {
+                minMax[0] = x;
+            }
+            else if (x > minMax[1])
+            {
+                minMax[1] = x;
+            }
+
+            if (y < minMax[2])
+            {
+                minMax[2] = y;
+            }
+            else if (y > minMax[3])
+            {
+                minMax[3] = y;
+            }
+        }
+        return minMax;
+    }
+
+    /**
+     * Get rectangle with no rotation containing the form
+     * @return created sRectangle
+     */
+    public sRectangle getSRectangleBound()
+    {
+        float minMax[] = getMinMax();
+        return new sRectangle(minMax[0],
+                minMax[2],
+                minMax[1] - minMax[0],
+                minMax[3] - minMax[2]);
+    }
+
+    /**
+     * Get circle containing the form
+     * @return created sRectangle
+     */
+    public Circle getCircleBound()
+    {
+        float radius = 0;
+        float dist;
+        for (int i = 0; i < size(); i++)
+        {
+            dist = points.get(i).getSqMagnitude();
+
+            if (radius < dist)
+            {
+                radius = dist;
+            }
+        }
+        return new Circle(getCenter(), (float) (Math.sqrt(radius)*getScale()));
+    }
+
     public ArrayList<Vector2D> getVectorsLocal()
     {
         ArrayList<Vector2D> l_vectors = new ArrayList<Vector2D>(points.size());
@@ -514,10 +591,10 @@ public class Form implements Serializable, Cloneable
     {
         rotateRadians((float) (omega * Math.PI) / 180, center);
     }
-    
+
     public void rotateDegrees(float omega)
     {
-	rotateRadians((float) (omega * Math.PI) / 180);
+        rotateRadians((float) (omega * Math.PI) / 180);
     }
 
     public void rotateRadians(float omega, Vector2D center)
@@ -526,7 +603,7 @@ public class Form implements Serializable, Cloneable
         orientation.rotateRadiansFree(omega, center);
         updateOrientation();
     }
-    
+
     public void rotateRadians(float omega)
     {
         this.omega += omega;
@@ -538,11 +615,11 @@ public class Form implements Serializable, Cloneable
         scale *= factor;
         orientation.scale(factor, center);
     }
-    
+
     public void scale(float factor)
     {
-	scale *= factor;
-	orientation.scale(factor);
+        scale *= factor;
+        orientation.scale(factor);
     }
 
     public void flipH(Vector2D center)
@@ -550,11 +627,11 @@ public class Form implements Serializable, Cloneable
         this.flipH = !this.flipH;
         orientation.flipH(center);
     }
-    
+
     public void flipH()
     {
-	this.flipH = !this.flipH;
-	orientation.flipH();
+        this.flipH = !this.flipH;
+        orientation.flipH();
     }
 
     public void flipV(Vector2D center)
@@ -562,23 +639,23 @@ public class Form implements Serializable, Cloneable
         this.flipV = !this.flipV;
         orientation.flipV(center);
     }
-    
+
     public void flipV()
     {
-	this.flipV = !this.flipV;
-	orientation.flipV();
+        this.flipV = !this.flipV;
+        orientation.flipV();
     }
 
     public void setPos(Vector2D v)
     {
         orientation.setPos(v);
     }
-    
+
     public void setX(float x)
     {
         orientation.setX(x);
     }
-    
+
     public void setY(float y)
     {
         orientation.setY(y);
@@ -664,7 +741,6 @@ public class Form implements Serializable, Cloneable
     }
 
     /**
-     *
      * @return surface covered by the polygon
      */
     public float calculateSurface()
@@ -684,6 +760,7 @@ public class Form implements Serializable, Cloneable
 
     /**
      * Test if a polygon is convex
+     *
      * @return result
      */
     public boolean isConvex()
@@ -726,7 +803,7 @@ public class Form implements Serializable, Cloneable
         {
             sum = sum
                     + (Math.PI - points.get((i + 1) % points.size()).getAngle(
-                            points.get(i), points.get((i + 2) % points.size())));
+                    points.get(i), points.get((i + 2) % points.size())));
         }
         if (Math.PI * 2 - 0.001 < Math.abs(sum)
                 && Math.abs(sum) < 2 * Math.PI + 0.001)
@@ -744,7 +821,6 @@ public class Form implements Serializable, Cloneable
     }
 
     /**
-     *
      * @return all edges of form in local coordinates
      */
     public ArrayList<Edge> getEdgesLocal()

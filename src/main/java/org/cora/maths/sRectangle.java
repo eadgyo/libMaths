@@ -31,11 +31,11 @@ public class sRectangle extends Form
     {
         this(center.x, center.y, width, height);
     }
-	public sRectangle(float x, float y, float width, float height)
+	public sRectangle(float leftX, float leftY, float width, float height)
 	{
 		super(4);
 		this.length = new Vector2D();
-		setLeft(x, y, width, height);
+		setLeft(leftX, leftY, width, height);
 	}
 	public sRectangle(Form form) 
 	{
