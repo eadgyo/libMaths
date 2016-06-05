@@ -149,6 +149,33 @@ public class Rectangle extends Form
         set(new Vector2D(x, y), new Vector2D(width, height));
     }
 
+    /**
+     * @param width rec size
+     * @param height rec size
+     */
+    public void setLength(float width, float height)
+    {
+        this.length.set(width, height);
+
+        points.get(0).set(- 0.5f*length.x,- 0.5f*length.y);
+        points.get(1).set(- 0.5f*length.x,+ 0.5f*length.y);
+        points.get(2).set(+ 0.5f*length.x,+ 0.5f*length.y);
+        points.get(3).set(+ 0.5f*length.x,- 0.5f*length.y);
+    }
+
+    /**
+     * @param length rec size
+     */
+    public void setLength(Vector2D length)
+    {
+        this.length.set(length);
+
+        points.get(0).set(- 0.5f*length.x,- 0.5f*length.y);
+        points.get(1).set(- 0.5f*length.x,+ 0.5f*length.y);
+        points.get(2).set(+ 0.5f*length.x,+ 0.5f*length.y);
+        points.get(3).set(+ 0.5f*length.x,- 0.5f*length.y);
+    }
+
 
 	public void set(Rectangle rec)
 	{
