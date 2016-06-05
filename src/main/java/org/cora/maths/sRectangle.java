@@ -215,4 +215,42 @@ public class sRectangle extends Form
 	    setLeftX(x);
 	    setLeftY(y);
 	}
+
+    @Override
+    public void rotateRadians(float a)
+    {
+        // Do nothing
+    }
+
+    @Override
+    public void rotateRadians(float a, Vector2D center)
+    {
+        // Do nothing
+    }
+
+    @Override
+	public float getMinX()
+    {
+        return getX(0);
+    }
+
+    @Override
+    public float getMaxX()
+    {
+        return getX(2);
+    }
+
+    @Override
+    public float getMinY()
+    {
+        return getY(0);
+    }
+
+    @Override
+    public float getMaxY()
+    {
+        return getY(2);
+    }
+
+
 }
