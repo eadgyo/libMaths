@@ -23,6 +23,13 @@ public class Circle extends RoundForm
         orientation.setPos(center);
     }
 
+    public Circle(float x, float y, float radius)
+    {
+        super();
+        this.radius = radius;
+        orientation.setPos(x, y);
+    }
+
     public Circle(float radius)
     {
         super();
@@ -34,6 +41,24 @@ public class Circle extends RoundForm
         super();
         this.radius = circle.getRadius();
         orientation.setPos(circle.getCenter());
+    }
+
+    public void set(Circle circle)
+    {
+        this.radius = circle.getRadius();
+        orientation.setPos(circle.getCenter());
+    }
+
+    public void set(Vector2D center, float radius)
+    {
+        this.radius = radius;
+        orientation.setPos(center);
+    }
+
+    public void set(float x, float y, float radius)
+    {
+        this.radius = radius;
+        orientation.setPos(x, y);
     }
 
     @Override

@@ -42,9 +42,8 @@ public class Rectangle extends Form
 	}
 
 	/**
-	 *
 	 * @param center center of the rectangle
-	 * @param length
+	 * @param length rec size
 	 * @param omega angle of the rectangle
      */
 	public Rectangle(Vector2D center, Vector2D length, float omega)
@@ -53,7 +52,50 @@ public class Rectangle extends Form
 		this.length = new Vector2D();
 		set(center, length, omega);
 	}
-	
+
+	/**
+	 * @param x center of the rectangle
+     * @param y center of the rectangle
+	 * @param width rec size
+     * @param height rec size
+	 * @param omega angle of the rectangle
+	 */
+	public Rectangle(float x, float y, float width, float height, float omega)
+	{
+		super(4);
+		this.length = new Vector2D();
+		set(x, y, width, height, omega);
+	}
+
+    /**
+     * @param center center of the rectangle
+     * @param length rec size
+     */
+    public Rectangle(Vector2D center, Vector2D length)
+    {
+        super(4);
+        this.length = new Vector2D();
+        set(center, length, omega);
+    }
+
+    /**
+     * @param x center of the rectangle
+     * @param y center of the rectangle
+     * @param width rec size
+     * @param height rec size
+     */
+    public Rectangle(float x, float y, float width, float height)
+    {
+        super(4);
+        this.length = new Vector2D();
+        set(x, y, width, height);
+    }
+
+    /**
+     * @param center center of the rectangle
+     * @param length rec size
+     * @param omega angle of the rectangle
+     */
 	public void set(Vector2D center, Vector2D length, float omega)
 	{
 		this.clearTransformations();
@@ -67,6 +109,47 @@ public class Rectangle extends Form
 		
 		this.rotateRadians(omega, center);
 	}
+
+    /**
+     * @param x center of the rectangle
+     * @param y center of the rectangle
+     * @param width rec size
+     * @param height rec size
+     * @param omega angle of the rectangle
+     */
+    public void set(float x, float y, float width, float height, float omega)
+    {
+        set(new Vector2D(x, y), new Vector2D(width, height), omega);
+    }
+
+    /**
+     * @param center center of the rectangle
+     * @param length rec size
+     */
+    public void set(Vector2D center, Vector2D length)
+    {
+        this.clearTransformations();
+        orientation.setPos(center);
+        this.length.set(length);
+
+        points.get(0).set(- 0.5f*length.x,- 0.5f*length.y);
+        points.get(1).set(- 0.5f*length.x,+ 0.5f*length.y);
+        points.get(2).set(+ 0.5f*length.x,+ 0.5f*length.y);
+        points.get(3).set(+ 0.5f*length.x,- 0.5f*length.y);
+    }
+
+    /**
+     * @param x center of the rectangle
+     * @param y center of the rectangle
+     * @param width rec size
+     * @param height rec size
+     */
+    public void set(float x, float y, float width, float height)
+    {
+        set(new Vector2D(x, y), new Vector2D(width, height));
+    }
+
+
 	public void set(Rectangle rec)
 	{
 		this.set(rec.getCenter(), rec.getLength(), rec.getAngle());
