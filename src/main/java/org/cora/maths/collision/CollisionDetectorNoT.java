@@ -1,5 +1,6 @@
 package org.cora.maths.collision;
 
+import org.cora.maths.Circle;
 import org.cora.maths.Form;
 import org.cora.maths.Matrix2;
 import org.cora.maths.Vector2D;
@@ -9,13 +10,31 @@ import java.util.ArrayList;
 
 public class CollisionDetectorNoT
 {
-    // Collisions detection
+    /**
+     * Detect collision
+     * @param A test form A
+     * @param B test form B
+     * @return result of collision detection testing
+     */
     public static boolean isColliding(Form A, Form B)
     {
-        return collisionSatFree(A, B);
+        return collisionSat(A, B);
+    }
+
+    /**
+     * Detect collision with circle optimisiation detection
+     * @param A test form A
+     * @param B test form B
+     * @param cA circle containing A
+     * @param cB circle containing B
+     * @return result of collision detection testing
+     */
+    public static boolean isCollidingOptimised(Form A, Form B, Circle cA, Circle cB)
+    {
+        return collisionSat(cA, cB) && collisionSat(A, B);
     }
     
-    private static boolean collisionSatFree(Form A, Form B)
+    private static boolean collisionSat(Form A, Form B)
     {
         // Les vecteurs VA et VB sont exprimés dans le repère world
         // Les points PA et PB sont exprimés dans le repères world

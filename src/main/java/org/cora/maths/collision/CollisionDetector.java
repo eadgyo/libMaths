@@ -1,19 +1,16 @@
 package org.cora.maths.collision;
 
-import org.cora.maths.FloatA;
-import org.cora.maths.Form;
-import org.cora.maths.Matrix2;
-import org.cora.maths.Vector2D;
+import org.cora.maths.*;
 
 import java.util.ArrayList;
 
 /**
- * Tools to detect collision between two convex polygons
+ * Tools to detect collision between two convex polygons and taking account of velocity
  */
 public class CollisionDetector
 {
     /**
-     *
+     * Detect collision
      * @param A test form A
      * @param B test form B
      * @param VA velocity of object A
@@ -26,6 +23,24 @@ public class CollisionDetector
             Vector2D push, FloatA t)
     {
         return collisionSat(A, B, VA, VB, push, t);
+    }
+
+    /**
+     * Detect collision with circle optimisiation detection
+     * @param A test form A
+     * @param B test form B
+     * @param cA circle containing A
+     * @param cB circle containing B
+     * @param VA velocity of object A
+     * @param VB velocity of object B
+     * @param push a blank vector to store the penetration vector
+     * @param t a blank float to store the result of amount of penetration
+     * @return result of collision detection testing
+     */
+    public static boolean isCollidingOptimised(Form A, Form B, Circle cA, Circle cB, Vector2D VA, Vector2D VB,
+                                               Vector2D push, FloatA t)
+    {
+        return collisionSat(cA, cB, VA, VB, push, t) && collisionSat(A, B, VA, VB, push, t);
     }
 
     private static boolean collisionSat(Form A, Form B, Vector2D VA,
