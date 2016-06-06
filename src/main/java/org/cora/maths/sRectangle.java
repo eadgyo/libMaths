@@ -12,14 +12,14 @@ public class sRectangle extends Form
 	public sRectangle()
 	{
 		super(4);
-		this.length = new Vector2D();
+		length = new Vector2D();
 		set(0, 0, 0, 0);
 	}
 
     public sRectangle(sRectangle rec)
     {
         super(rec);
-        this.length.set(rec.getLength());
+        length = new Vector2D(rec.getLength());
     }
 	
 	public static sRectangle createSRectangleLeft(Vector2D left, Vector2D length)
