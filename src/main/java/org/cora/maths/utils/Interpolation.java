@@ -35,10 +35,15 @@ public class Interpolation
     {
         // y = a * exp(bkx)
 
-        float a = start;
+        /*float a = start;
         float b = (float) (Math.log(end/a) / (k * duration));
 
-        return (float) (a * Math.exp(b * k * time));
+        return (float) (a * Math.exp(b * k * time));*/
+
+        float a = (float) ((Math.exp(end) - Math.exp(start))/(Math.exp(k * duration) - Math.exp(0)));
+        float b = (float) Math.exp(start);
+
+        return (float) (a * Math.exp(k * time/duration) + b)    ;
     }
 
     /**
