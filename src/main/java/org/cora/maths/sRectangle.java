@@ -15,28 +15,38 @@ public class sRectangle extends Form
 		this.length = new Vector2D();
 		set(0, 0, 0, 0);
 	}
+
+    public sRectangle(sRectangle rec)
+    {
+        super(rec);
+        this.length.set(rec.getLength());
+    }
 	
 	public static sRectangle createSRectangleLeft(Vector2D left, Vector2D length)
 	{
 		sRectangle rec = new sRectangle(left.add(length.multiply(0.5f)), length);
 		return rec;
 	}
-	public sRectangle(Vector2D center, Vector2D length)
+
+    public sRectangle(Vector2D center, Vector2D length)
 	{
 		super(4);
 		this.length = new Vector2D();
 		set(center, length);
 	}
-	public sRectangle(Vector2D center, float width, float height)
+
+    public sRectangle(Vector2D center, float width, float height)
     {
         this(center.x, center.y, width, height);
     }
-	public sRectangle(float leftX, float leftY, float width, float height)
+
+    public sRectangle(float leftX, float leftY, float width, float height)
 	{
 		super(4);
 		this.length = new Vector2D();
 		setLeft(leftX, leftY, width, height);
 	}
+
 	public sRectangle(Form form) 
 	{
 		super(form);
@@ -71,6 +81,12 @@ public class sRectangle extends Form
 		side.set(form.getLocal(0), form.getLocal(1));
 		length.y = side.getMagnitude();
 	}
+
+    @Override
+    public Object clone()
+    {
+        return new sRectangle(this);
+    }
 	
 	public void setWidth(float width)
 	{
