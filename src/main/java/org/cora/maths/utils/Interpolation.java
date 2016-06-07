@@ -33,17 +33,12 @@ public class Interpolation
      */
     public static float expInterpolation(float start, float end, float duration, float time, float k)
     {
-        // y = a * exp(bkx)
+        // y = a * exp(kx) + b
 
-        /*float a = start;
-        float b = (float) (Math.log(end/a) / (k * duration));
+        float a = (float) ((end - start)/(Math.exp(duration * k) - 1));
+        float b = start - a;
 
-        return (float) (a * Math.exp(b * k * time));*/
-
-        float a = (float) ((Math.exp(end) - Math.exp(start))/(Math.exp(k * duration) - Math.exp(0)));
-        float b = (float) Math.exp(start);
-
-        return (float) (a * Math.exp(k * time/duration) + b)    ;
+        return (float) (a * Math.exp(time * k) + b);
     }
 
     /**
@@ -57,17 +52,12 @@ public class Interpolation
      */
     public static float logInterpolation(float start, float end, float duration, float time, float k)
     {
-        // y = a + b * log(kx)
+        // y = a * log(kx + 1) + b
 
-        float r = 1/k;
-        start += r;
-        duration += r;
-        time += r;
+        float a = (float) ((end - start)/(Math.log(k * duration + 1)));
+        float b = start;
 
-        float a = start;
-        float b = (float) ((end - a) / Math.log(k * duration + 1));
-
-        return (float) ( a + b * Math.log(k * time));
+        return (float) (a * Math.log(k * time + 1) + b);
     }
 
     /**
@@ -82,11 +72,11 @@ public class Interpolation
      */
     public static float powInterpolation(float start, float end, float duration, float time, float x, float k)
     {
-        // y = a * x^(bkx)
+        // y = a * x^(kx) + b
 
-        float a = start;
-        float b = (float) (Math.log(end/a) / (k * duration * Math.log(x)));
+        float a = (float) ((end - start)/(Math.pow(x, k*duration) - 1));
+        float b = start - a;
 
-        return (float) (a * Math.pow(x, b * k * time));
+        return (float) (a * Math.pow(x, k * time) + b);
     }
 }
