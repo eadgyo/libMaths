@@ -676,6 +676,13 @@ public class Form implements Serializable, Cloneable
         orientation.scale(factor);
     }
 
+    public void setScale(float scale, Vector2D center)
+    {
+        float factor = scale / this.scale;
+        this.scale = scale;
+        orientation.scale(factor, center);
+    }
+
     public void setFlipH(boolean flipH)
     {
         if (this.flipH != flipH)
