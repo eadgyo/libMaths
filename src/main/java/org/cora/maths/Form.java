@@ -17,7 +17,9 @@ public class Form implements Serializable, Cloneable
     protected ArrayList<Vector2D> points;
     protected float radius;
 
-    protected float xMin, xMax, yMin, yMax;
+    protected float xMax, yMax;
+    protected Vector2D c1;
+
     protected ArrayList<Vector2D> savedVectorsLocal;
 
     /**
@@ -37,6 +39,7 @@ public class Form implements Serializable, Cloneable
         flipH = false;
         flipV = false;
         radius = 0;
+        c1 = new Vector2D();
 
         orientation = Matrix3.orientation(omega, scale, flipH, flipV,
                 new Vector2D());
@@ -50,6 +53,7 @@ public class Form implements Serializable, Cloneable
         scale = 1f;
         flipH = false;
         flipV = false;
+        c1 = new Vector2D();
 
         orientation = Matrix3.orientation(omega, scale, flipH, flipV,
                 new Vector2D());
@@ -76,10 +80,9 @@ public class Form implements Serializable, Cloneable
         this.flipV = form.getFlipV();
         this.radius = form.getOriginalRadius();
 
-        this.xMin = form.getXMinRel();
         this.xMax = form.getXMaxRel();
-        this.yMin = form.getYMinRel();
         this.yMax = form.getYMaxRel();
+        this.c1 = form.getC1();
 
         orientation = Matrix3.orientation(omega, scale, flipH, flipV,
                 form.getCenter());
@@ -288,6 +291,7 @@ public class Form implements Serializable, Cloneable
     {
         Vector2D v = points.get(0).getRotatedRadians(omega);
 
+        float xMin, yMin;
         xMin = yMin = v.x;
         xMax = yMax = v.y;
 
@@ -339,6 +343,10 @@ public class Form implements Serializable, Cloneable
             yMin *= scale;
             yMax *= scale;
         }
+
+        c1.set((xMax + xMin)/2, (yMax + yMin)/2);
+        xMax -= c1.x;
+        yMax -= c1.y;
     }
 
     /**
@@ -350,16 +358,6 @@ public class Form implements Serializable, Cloneable
         return savedVectorsLocal;
     }
 
-    /**
-     * Call update Bound first
-     * Get saved x Min in a relative coordinate
-     * With scale transformation
-     * @return xMin
-     */
-    public float getXMinRel()
-    {
-        return xMin;
-    }
 
     /**
      * Call update Bound first
@@ -374,17 +372,6 @@ public class Form implements Serializable, Cloneable
 
     /**
      * Call update Bound first
-     * Get saved y Min in a relative coordinate
-     * With scale transformation
-     * @return xMin
-     */
-    public float getYMinRel()
-    {
-        return yMin;
-    }
-
-    /**
-     * Call update Bound first
      * Get saved y Max in a relative coordinate
      * With scale transformation
      * @return yMax
@@ -393,6 +380,12 @@ public class Form implements Serializable, Cloneable
     {
         return yMax;
     }
+
+    /**
+     * Get center of bound
+     * @return c1
+     */
+    public Vector2D getC1() { return c1; }
 
 
     /**

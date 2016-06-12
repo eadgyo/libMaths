@@ -118,9 +118,7 @@ public class sRectangle extends Form
     @Override
     public void updateBound()
     {
-        xMin = points.get(0).x * scale;
         xMax = points.get(0).y * scale;
-        yMin = points.get(2).x * scale;
         yMax = points.get(2).y * scale;
     }
 

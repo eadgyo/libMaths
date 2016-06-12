@@ -5,10 +5,12 @@ import org.cora.maths.FloatA;
 import org.cora.maths.Vector2D;
 import org.cora.maths.sRectangle;
 
-import java.util.Vector;
-
 /**
  * Created by ronan-h on 11/06/16.
+ */
+
+/**
+ * Optimised collisions detection for special collisions
  */
 public class CollisionDetectorFast
 {
@@ -261,7 +263,8 @@ public class CollisionDetectorFast
     public static boolean isColliding(sRectangle A, sRectangle B, Vector2D VA, Vector2D VB,
                                       Vector2D push, FloatA t)
     {
-        return isColliding(A.getXMinRel(), A.getXMaxRel(), A.getYMinRel(), A.getYMaxRel(), )
+        return isColliding(A.getXMaxRel(), A.getYMaxRel(), B.getXMaxRel(), B.getYMaxRel(),
+                A.getC1(), B.getC1(), VA, VB, push, t);
     }
 
 }
