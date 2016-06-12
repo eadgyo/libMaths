@@ -62,9 +62,20 @@ public class Vector2D implements Serializable, Cloneable
         z = p.z;
     }
 
-    public Object clone()
+    public Vector2D clone()
     {
-        return new Vector2D(this);
+        Vector2D vec;
+
+        try
+        {
+            vec = (Vector2D) super.clone();
+        }
+        catch (CloneNotSupportedException e)
+        {
+            return null;
+        }
+
+        return vec;
     }
 
     public void reset()
@@ -140,7 +151,7 @@ public class Vector2D implements Serializable, Cloneable
 
     public boolean isColinear(Vector2D v)
     {
-        if (x * v.y - y * v.x == 0) // vectoriel
+        if (Math.abs(x * v.y - y * v.x) < 0.0001f) // vectoriel
             return true;
         else
             return false;
@@ -225,10 +236,17 @@ public class Vector2D implements Serializable, Cloneable
     }
 
     // Transformations
-    public void translate(Vector2D p)
+    public void translate(Vector2D vec)
     {
-        this.x += p.x;
-        this.y += p.y;
+        this.x += vec.x;
+        this.y += vec.y;
+    }
+
+    public Vector2D getTranslated(Vector2D vec)
+    {
+        Vector2D v = (Vector2D) clone();
+        v.translate(vec);
+        return v;
     }
 
     public void translateX(float vecX)
@@ -236,9 +254,23 @@ public class Vector2D implements Serializable, Cloneable
         x += vecX;
     }
 
+    public Vector2D getTranslatedX(float vecX)
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.translateX(vecX);
+        return vec;
+    }
+
     public void translateY(float vecY)
     {
         y += vecY;
+    }
+
+    public Vector2D getTranslatedY(float vecY)
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.translateY(vecY);
+        return vec;
     }
 
     public void rotateDegrees(float omega, Vector2D center)
@@ -256,10 +288,53 @@ public class Vector2D implements Serializable, Cloneable
         y = (float) (Math.cos(omega) * (l_y - center.y) + Math.sin(omega) * (l_x - center.x) + center.y);
     }
 
+    public Vector2D getRotatedRadians(float omega, Vector2D center)
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.rotateRadians(omega, center);
+        return vec;
+    }
+
+    public void rotateRadians(float omega)
+    {
+        omega = -omega;
+        float l_x = x;
+        float l_y = y;
+        x = (float) (Math.cos(omega) * l_x - Math.sin(omega) * l_y);
+        y = (float) (Math.cos(omega) * l_y + Math.sin(omega) * l_x);
+    }
+
+    public Vector2D getRotatedRadians(float omega)
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.rotateRadians(omega);
+        return vec;
+    }
+
     public void scale(float factor, Vector2D center)
     {
         x = factor * (x - center.x) + center.x;
         y = factor * (y - center.y) + center.y;
+    }
+
+    public Vector2D getScaled(float factor, Vector2D center)
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.scale(factor, center);
+        return vec;
+    }
+
+    public void scale(float factor)
+    {
+        x = factor * x;
+        y = factor * y;
+    }
+
+    public Vector2D getScaled(float factor)
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.scale(factor);
+        return vec;
     }
 
     public void flipV(Vector2D center)
@@ -267,10 +342,43 @@ public class Vector2D implements Serializable, Cloneable
         x = -x + 2 * center.x;
     }
 
+    public Vector2D getFlippedV(Vector2D center)
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.flipV(center);
+        return vec;
+    }
+
+    public void flipV() { x = - x; }
+
+    public Vector2D getFlippedV()
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.flipV();
+        return vec;
+    }
+
     public void flipH(Vector2D center)
     {
         y = -y + 2 * center.y;
     }
+
+    public Vector2D getFlippedH(Vector2D center)
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.flipH(center);
+        return vec;
+    }
+
+    public void flipH() { y = - y; }
+
+    public Vector2D getFlippedH()
+    {
+        Vector2D vec = (Vector2D) clone();
+        vec.flipH();
+        return vec;
+    }
+
 
     public float getAngle(Vector2D A, Vector2D C)
     {

@@ -15,13 +15,16 @@ public class Form implements Serializable, Cloneable
     protected Matrix3 orientation;
 
     protected ArrayList<Vector2D> points;
+    protected float radius;
+
+    protected float xMin, xMax, yMin, yMax;
+    protected ArrayList<Vector2D> savedVectorsLocal;
 
     /**
      * @param size number of points
      */
     public Form(int size)
     {
-
         points = new ArrayList<Vector2D>(size);
         for (int i = 0; i < size; i++)
         {
@@ -33,6 +36,7 @@ public class Form implements Serializable, Cloneable
         scale = 1f;
         flipH = false;
         flipV = false;
+        radius = 0;
 
         orientation = Matrix3.orientation(omega, scale, flipH, flipV,
                 new Vector2D());
@@ -40,7 +44,6 @@ public class Form implements Serializable, Cloneable
 
     public Form()
     {
-
         points = new ArrayList<Vector2D>();
 
         omega = 0;
@@ -71,15 +74,40 @@ public class Form implements Serializable, Cloneable
         this.scale = form.getScale();
         this.flipH = form.getFlipH();
         this.flipV = form.getFlipV();
+        this.radius = form.getOriginalRadius();
+
+        this.xMin = form.getXMinRel();
+        this.xMax = form.getXMaxRel();
+        this.yMin = form.getYMinRel();
+        this.yMax = form.getYMaxRel();
 
         orientation = Matrix3.orientation(omega, scale, flipH, flipV,
                 form.getCenter());
     }
 
-    public Object clone()
+    @Override
+    public Form clone()
     {
         Form form = new Form(this);
         return form;
+    }
+
+    /**
+     *
+     * @return scale with scaling
+     */
+    public float getRadius()
+    {
+        return radius*scale;
+    }
+
+    /**
+     *
+     * @return scale without scaling
+     */
+    public float getOriginalRadius()
+    {
+        return radius;
     }
 
     /**
@@ -165,6 +193,7 @@ public class Form implements Serializable, Cloneable
         }
         Vector2D center = new Vector2D();
         float x0 = 0, y0 = 0, x1 = 0, y1 = 0, signedArea = 0, a = 0;
+
         ArrayList<Vector2D> points = this.getPointsLocal();
         for (int j = points.size() - 1, i = 0; i < points.size(); j = i, i++)
         {
@@ -178,7 +207,7 @@ public class Form implements Serializable, Cloneable
             center.y += (y0 + y1) * a;
         }
 
-        signedArea *= 0.5;
+        signedArea *= 0.5f;
         center.x /= (6f * signedArea);
         center.y /= (6f * signedArea);
 
@@ -198,6 +227,8 @@ public class Form implements Serializable, Cloneable
         Matrix3 inverse = newCoor.inverse();
         Matrix3 result = inverse.multiply(lastCoor);
 
+        radius = 0;
+
         for (int i = 0; i < points.size(); i++)
         {
             /*
@@ -207,14 +238,167 @@ public class Form implements Serializable, Cloneable
              * orientation.multiply(p); Vector2D pN = inverse.multiply(pW);
              */
             points.get(i).set(result.multiply(points.get(i)));
+
+            radius = Math.max(points.get(i).getSqMagnitude(), radius);
         }
+
+        radius = (float) Math.sqrt(radius);
         orientation.setPos(newCenter);
+
+        updateVectorsLocal();
     }
+
+    /**
+     * Update local vectors
+     */
+    public void updateVectorsLocal()
+    {
+        savedVectorsLocal.clear();
+
+        for (int j = size() - 1, i = 0; i < size(); j = i, i++)
+        {
+            Vector2D v = new Vector2D(points.get(j), points.get(i));
+            savedVectorsLocal.add(v.getPerpendicular());
+        }
+
+        // On enleve les vectors colinéaires
+        for (int i = 0; i < savedVectorsLocal.size() - 1; i++)
+        {
+            // Si on est en dessous de 2 vecteurs ca sert à rien de continuer,
+            // On sait que ces 2 vecteurs (ou moins) ne sont pas colinéaires
+            if (savedVectorsLocal.size() < 3)
+                break;
+
+            for (int j = i + 1; j < savedVectorsLocal.size(); j++)
+            {
+                if (savedVectorsLocal.get(i).isColinear(savedVectorsLocal.get(j)))
+                {
+                    savedVectorsLocal.remove(i);
+                    i--;
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Update min max x, y
+     */
+    public void updateBound()
+    {
+        Vector2D v = points.get(0).getRotatedRadians(omega);
+
+        xMin = yMin = v.x;
+        xMax = yMax = v.y;
+
+        for (int i = 1; i < points.size(); i++)
+        {
+            v = points.get(i).getRotatedRadians(omega);
+            if (v.x < xMin)
+            {
+                xMin = v.x;
+            }
+            else if (v.x > xMax)
+            {
+                xMax = v.x;
+            }
+
+            if (v.y < yMin)
+            {
+                yMin = v.y;
+            }
+            else if (v.y > yMax)
+            {
+                yMax = v.y;
+            }
+        }
+
+        xMin *= scale * ((flipV) ? 1 : -1);
+        xMax *= scale * ((flipV) ? 1 : -1);
+
+        if (flipV)
+        {
+            float temp = xMin;
+            xMin = - xMax * scale;
+            xMax = - temp * scale;
+        }
+        else
+        {
+            xMin *= scale;
+            xMax *= scale;
+        }
+
+        if (flipH)
+        {
+            float temp = yMin;
+            yMin = - yMax * scale;
+            yMax = - temp * scale;
+        }
+        else
+        {
+            yMin *= scale;
+            yMax *= scale;
+        }
+    }
+
+    /**
+     * Get saved edge vector in local coordinates
+     * @return list of vec
+     */
+    public ArrayList<Vector2D> getSavedVectorsLocal()
+    {
+        return savedVectorsLocal;
+    }
+
+    /**
+     * Call update Bound first
+     * Get saved x Min in a relative coordinate
+     * With scale transformation
+     * @return xMin
+     */
+    public float getXMinRel()
+    {
+        return xMin;
+    }
+
+    /**
+     * Call update Bound first
+     * Get saved x Max in a relative coordinate
+     * With scale transformation
+     * @return xMax
+     */
+    public float getXMaxRel()
+    {
+        return xMax;
+    }
+
+    /**
+     * Call update Bound first
+     * Get saved y Min in a relative coordinate
+     * With scale transformation
+     * @return xMin
+     */
+    public float getYMinRel()
+    {
+        return yMin;
+    }
+
+    /**
+     * Call update Bound first
+     * Get saved y Max in a relative coordinate
+     * With scale transformation
+     * @return yMax
+     */
+    public float getYMaxRel()
+    {
+        return yMax;
+    }
+
 
     /**
      * return min and max projection of the polygon on the vector axis
      *
-     * @param axis
+     * @param axis projection axis
      *
      * @return MinMax
      */

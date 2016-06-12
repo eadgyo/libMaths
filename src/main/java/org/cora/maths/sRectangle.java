@@ -83,11 +83,47 @@ public class sRectangle extends Form
 	}
 
     @Override
-    public Object clone()
+    public sRectangle clone()
     {
         return new sRectangle(this);
     }
-	
+
+    @Override
+    public void updateVectorsLocal()
+    {
+        savedVectorsLocal.clear();
+
+        for (int i = 0; i < size(); i++)
+        {
+            savedVectorsLocal.add(new Vector2D(points.get(i+1), points.get(i)).getPerpendicular());
+        }
+    }
+
+    public void flipH(Vector2D center)
+    {
+    }
+
+    public void flipH()
+    {
+    }
+
+    public void flipV(Vector2D center)
+    {
+    }
+
+    public void flipV()
+    {
+    }
+
+    @Override
+    public void updateBound()
+    {
+        xMin = points.get(0).x * scale;
+        xMax = points.get(0).y * scale;
+        yMin = points.get(2).x * scale;
+        yMax = points.get(2).y * scale;
+    }
+
 	public void setWidth(float width)
 	{
 	    set(getX(), getY(), width, getHeight());

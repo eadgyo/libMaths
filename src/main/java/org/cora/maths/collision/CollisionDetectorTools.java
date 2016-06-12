@@ -25,6 +25,8 @@ public class CollisionDetectorTools
         if (found)
             return;
 
+        System.out.println("Need this? Really?");
+
         float magnitude1 = axesSat.axes.get(0).normalize();
         axesSat.tAxes.set(0, axesSat.tAxes.get(0) / magnitude1);
         t.v = axesSat.tAxes.get(0);
@@ -106,7 +108,6 @@ public class CollisionDetectorTools
                 min.set(tempV);
             }
         }
-
         
         // On retransforme le vecteur dans le repère de A
         Vector2D res = transformBA.multiply(min);
@@ -125,31 +126,6 @@ public class CollisionDetectorTools
     
     public static ArrayList<Vector2D> getVectorsSatForm(Form A)
     {
-        ArrayList<Vector2D> l_vectors = new ArrayList<Vector2D>(A.size());
-        for (int j = A.size() - 1, i = 0; i < A.size(); j = i, i++)
-        {
-            Vector2D v = new Vector2D(A.getLocal(j), A.getLocal(i));
-            l_vectors.add(v.getPerpendicular());
-        }
-
-        // On enleve les vectors colinéaires
-        for (int i = 0; i < l_vectors.size() - 1; i++)
-        {
-            // Si on est en dessous de 2 vecteurs ca sert à rien de continuer,
-            // On sait que ces 2 vecteurs (ou moins) ne sont pas colinéaires
-            if (l_vectors.size() < 3)
-                break;
-
-            for (int j = i + 1; j < l_vectors.size(); j++)
-            {
-                if (l_vectors.get(i).isColinear(l_vectors.get(j)))
-                {
-                    l_vectors.remove(i);
-                    i--;
-                    break;
-                }
-            }
-        }
-        return l_vectors;
+        return A.getSavedVectorsLocal();
     }
 }

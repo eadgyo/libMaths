@@ -35,6 +35,7 @@ public class Rectangle extends Form
 		side.set(points.get(0), points.get(1));
 		length.y = side.getMagnitude();
 	}
+
 	@Override
 	public Rectangle clone()
 	{
@@ -52,6 +53,17 @@ public class Rectangle extends Form
 		this.length = new Vector2D();
 		set(center, length, omega);
 	}
+
+    @Override
+    public void updateVectorsLocal()
+    {
+        savedVectorsLocal.clear();
+
+        for (int i = 0; i < size(); i++)
+        {
+            savedVectorsLocal.add(new Vector2D(points.get(i+1), points.get(i)).getPerpendicular());
+        }
+    }
 
 	/**
 	 * @param x center of the rectangle

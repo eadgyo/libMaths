@@ -8,8 +8,6 @@ public class Circle extends RoundForm
      */
     private static final long serialVersionUID = 1L;
 
-    private float radius;
-
     public Circle()
     {
         super();
@@ -36,17 +34,14 @@ public class Circle extends RoundForm
         this.radius = radius;
     }
 
-    public Circle(Circle circle)
+    public Circle(Form form)
     {
-        super();
-        this.radius = circle.getRadius();
-        orientation.setPos(circle.getCenter());
+        super(form);
     }
 
     public void set(Circle circle)
     {
-        this.radius = circle.getRadius();
-        orientation.setPos(circle.getCenter());
+        super.set(circle);
     }
 
     public void set(Vector2D center, float radius)
@@ -62,26 +57,14 @@ public class Circle extends RoundForm
     }
 
     @Override
-    public Object clone()
+    public Circle clone()
     {
         return new Circle(this);
-    }
-
-    @Override
-    public void scale(float factor, Vector2D center)
-    {
-        super.scale(factor, center);
-        this.radius *= factor;
     }
 
     public void setRadius(float radius)
     {
         this.radius = radius;
-    }
-
-    public float getRadius()
-    {
-        return radius;
     }
 
     public float getMinX()
@@ -144,7 +127,7 @@ public class Circle extends RoundForm
     public boolean isColliding(Circle circle)
     {
         Vector2D vec = new Vector2D(circle.getCenter(), this.getCenter());
-        if (vec.getMagnitude() <= this.radius + circle.radius)
+        if (vec.getSqMagnitude() <= (this.radius + circle.radius)*(this.radius + circle.radius))
             return true;
         return false;
     }

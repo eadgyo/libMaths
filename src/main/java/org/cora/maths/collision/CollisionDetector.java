@@ -16,7 +16,7 @@ public class CollisionDetector
      * @param VA velocity of object A
      * @param VB velocity of object B
      * @param push a blank vector to store the penetration vector
-     * @param t a blank float to store the result of amount of penetration
+     * @param t dt
      * @return result of collision detection testing
      */
     public static boolean isColliding(Form A, Form B, Vector2D VA, Vector2D VB,
@@ -34,13 +34,13 @@ public class CollisionDetector
      * @param VA velocity of object A
      * @param VB velocity of object B
      * @param push a blank vector to store the penetration vector
-     * @param t a blank float to store the result of amount of penetration
+     * @param t dt
      * @return result of collision detection testing
      */
     public static boolean isCollidingOptimised(Form A, Form B, Circle cA, Circle cB, Vector2D VA, Vector2D VB,
                                                Vector2D push, FloatA t)
     {
-        return collisionSat(cA, cB, VA, VB, push, t) && collisionSat(A, B, VA, VB, push, t);
+        return collisionSat(cA, cB, VA, VB, push, new FloatA(t.v)) && collisionSat(A, B, VA, VB, push, t);
     }
 
     private static boolean collisionSat(Form A, Form B, Vector2D VA,
@@ -72,7 +72,7 @@ public class CollisionDetector
         AxesSat axesSat = new AxesSat();
 
         float squaredVel = relVel.getSqMagnitude();
-        if (squaredVel > 0.000001f)
+        if (squaredVel > 0.00001f)
         {
             if (!intervalIntersection(A, B, relVel.getPerpendicular(), relPos,
                     relVel, orientI, axesSat, t))
@@ -101,7 +101,6 @@ public class CollisionDetector
 
         push.set(OB.multiply(push));
 
-        // System.out.println("Collision");
         return true;
     }
 
@@ -109,7 +108,6 @@ public class CollisionDetector
             Vector2D relPos, Vector2D relVel, Matrix2 orientI, AxesSat axesSat,
             FloatA t)
     {
-        axis.normalize();
         Vector2D minMaxA = A.getInterval(orientI.multiply(axis));
         Vector2D minMaxB = B.getInterval(axis);
 
@@ -125,7 +123,7 @@ public class CollisionDetector
         if (d0 > 0 || d1 > 0)// Pas de chevauchement
         {
             float fVel = relVel.scalarProduct(axis);
-            if (Math.abs(fVel) > 0.00000001f)
+            if (Math.abs(fVel) > 0.00001f)
             {
                 float t0 = -d0 / fVel;
                 float t1 = d1 / fVel;
